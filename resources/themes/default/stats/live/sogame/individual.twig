@@ -1,0 +1,231 @@
+{% if info is not empty %}
+    <div class="game_info">
+        {% for info_key,info_data in info.data %}
+            {% if info_data is not empty %}
+                {% if info_data is iterable and info_key == 'referees' %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{% for ref_data in info_data %}
+                                {% if ref_data.title is defined %}
+                                    {{ ref_data.title | e  }} :
+                                {% endif %}
+                                {% if ref_data.name is defined %}
+                                    {{ ref_data.name | e  }} <br>
+                                {% endif %}
+                            {% endfor %}</p>
+                    </div>
+                {% else %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{{ info_data | e  }}</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if teams_stats is not empty %}
+    {% for team in teams_stats %}
+        <div class="table_xml">
+            <h4 class="text-left">#{{ team.rank | e }} {{ team.name | e }}</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>#</th>
+                        <th>Player</th>
+                        <th>sh</th>
+                        <th>sog</th>
+                        <th>g</th>
+                        <th>a</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in team.stats if data.pos is not empty %}
+                        <tr>
+                            <td>
+                                {% if data.pos is defined %}
+                                    {{ data.pos | e | upper }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.uni is defined %}
+                                    {{ data.uni | e }}
+                                {% endif %}
+                            </td>
+                            <td class="text-left">
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.sh is defined %}
+                                    {{ data.sh | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.sog is defined %}
+                                    {{ data.sog | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.g is defined %}
+                                    {{ data.g | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.a is defined %}
+                                    {{ data.a | e }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for data in team.stats if data.pos is empty %}
+                        <tr>
+                            <td></td>
+                            <td>
+                                {% if data.uni is defined %}
+                                    {{ data.uni | e }}
+                                {% endif %}
+                            </td>
+                            <td class="text-left">
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.sh is defined %}
+                                    {{ data.sh | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.sog is defined %}
+                                    {{ data.sog | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.g is defined %}
+                                    {{ data.g | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.a is defined %}
+                                    {{ data.a | e }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>Totals</td>
+                        <td></td>
+                        <td>
+                            {% if team.total.sh is defined %}
+                                {{ team.total.sh | e }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if team.total.sog is defined %}
+                                {{ team.total.sog | e }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if team.total.g is defined %}
+                                {{ team.total.g | e }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if team.total.a is defined %}
+                                {{ team.total.a | e }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if goalie_stats is not empty %}
+    {% for team in goalie_stats %}
+        <div class="table_xml">
+            <h4 class="text-left">#{{ team.rank | e }} {{ team.name | e }}</h4>
+            <h4 class="text-left">GOALKEEPING</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>#</th>
+                        <th>Player</th>
+                        <th>Minutes</th>
+                        <th>GA</th>
+                        <th>Saves</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in team.stats %}
+                        <tr>
+                            <td>
+                                {% if data.pos is defined %}
+                                    {{ data.pos | e | upper }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.uni is defined %}
+                                    {{ data.uni | e }}
+                                {% endif %}
+                            </td>
+                            <td class="text-left">
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.minutes is defined %}
+                                    {{ data.minutes | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.ga is defined %}
+                                    {{ data.ga | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.saves is defined %}
+                                    {{ data.saves | e }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>Totals</td>
+                        <td></td>
+                        <td>
+                            {% if team.total.minutes is defined %}
+                                {{ team.total.minutes | e }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if team.total.ga is defined %}
+                                {{ team.total.ga | e }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if team.total.saves is defined %}
+                                {{ team.total.saves | e }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

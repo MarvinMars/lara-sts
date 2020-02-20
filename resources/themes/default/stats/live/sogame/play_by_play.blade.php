@@ -1,0 +1,1 @@
+@include('stats.live.common.play_by_play',[ 'games' => $games ])

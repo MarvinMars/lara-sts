@@ -1,0 +1,520 @@
+<div class="article__box_score">
+    {% if boxscore is not empty %}
+        <div class="results">
+            <div class="results__head">
+                <span></span>
+                <div class="list">
+                    {% for period in boxscore.data.0.periods.lineprd %}
+                        <span><small>{{ period.prd | e }} </small></span>
+                    {% endfor %}
+                    <span>total</span>
+                </div>
+            </div>
+            <div class="results__body">
+                {% for team in  boxscore.data %}
+                    <div class="item">
+                        <div class="name">
+                            <span>{{ team.name | e }}</span>
+                        </div>
+                        <div class="list">
+                            {% for period in team.periods.lineprd %}
+                                <span><small>period {{ period.prd | e }}</small> {{ period.score | e }}</span>
+                            {% endfor %}
+                            <span class="total">
+                            <small>total</small>
+                            {{ team.periods.score }}
+                        </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if stats is not empty %}
+            <div class="stats">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Game stats</th>
+                        {% for team in  boxscore.data %}
+                            <th>{{ team.name }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for  name  in stats %}
+                        <tr>
+                            <td>{{ name | e | stats }}</td>
+                            {% for team in  boxscore.data %}
+                                {% if team.stats[name] is defined %}
+                                    <td>{{ team.stats[name] | e }}</td>
+                                {% else %}
+                                    <td>0</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% if article is not defined %}
+{% if scoring_summary is defined %}
+    <div class="table_xml">
+        <h2 class="text-center">Scoring Summary</h2>
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Time</th>
+                        <th>Scored By</th>
+                        <th>Assisted By</th>
+                        {% for team in scoring_summary.teams %}
+                            <th>  {{ team | e }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in scoring_summary.score %}
+                        <tr>
+                            <td>
+                                {% if data.prd is defined %}
+                                    {{ data.prd | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.time is defined %}
+                                    {{ data.time | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.assist1 is defined %}
+                                    {{ data.assist1 | e }}
+                                {% endif %}
+                                {% if data.assist2 is defined %}
+                                    ,{{ data.assist2 | e }}
+                                {% endif %}
+                            </td>
+                            {% for key, team in scoring_summary.teams %}
+                                {% if key ==  data.vh %}
+                                    <td>  1 </td>
+                                {% else %}
+                                    <td> 0 </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if game is defined %}
+    {% for team in game.team %}
+        <div class="table_xml">
+            <h4 class="text-left">
+                {{ team.name | e }}
+                {% if team.linescore.score is defined %}
+                    ( {{ team.linescore.score | e }} )
+                {% endif %}
+            </h4>
+        </div>
+        <div class="table_xml">
+            <div class="article__stats">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Player</th>
+                            <th>gs</th>
+                            <th>min</th>
+                            <th>fg</th>
+                            <th>3pt</th>
+                            <th>ft</th>
+                            <th>orb-drd</th>
+                            <th>reb</th>
+                            <th>pf</th>
+                            <th>a</th>
+                            <th>to</th>
+                            <th>blk</th>
+                            <th>stl</th>
+                            <th>pts</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if team.player is defined %}
+                            {% for data in team.player %}
+                                <tr>
+                                    <td>
+                                        {% if data.uni is defined %}
+                                            {{ data.uni | e | stats }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-left">
+                                        {% if data.name is defined %}
+                                            {{ data.name | e }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.gs is defined %}
+                                            *
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.min is defined %}
+                                            {{ data.stats.min | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.fgm is defined %}
+                                            {{ data.stats.fgm | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if data.stats.fga is defined %}
+                                            {{ data.stats.fga | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.fgm3 is defined %}
+                                            {{ data.stats.fgm3 | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if data.stats.fga3 is defined %}
+                                            {{ data.stats.fga3 | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.ftm is defined %}
+                                            {{ data.stats.ftm | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if data.stats.fta is defined %}
+                                            {{ data.stats.fta | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.oreb is defined %}
+                                            {{ data.stats.oreb | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if data.stats.dreb is defined %}
+                                            {{ data.stats.dreb | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.treb is defined %}
+                                            {{ data.stats.treb | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.pf is defined %}
+                                            {{ data.stats.pf | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.ast is defined %}
+                                            {{ data.stats.ast | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.to is defined %}
+                                            {{ data.stats.to | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.blk is defined %}
+                                            {{ data.stats.blk | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.stl is defined %}
+                                            {{ data.stats.stl | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.stats.tp is defined %}
+                                            {{ data.stats.tp | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="3">Totals:</td>
+                            <td>
+                                {% if team.totals.stats.min is defined %}
+                                    {{ team.totals.stats.min | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.fgm is defined %}
+                                    {{ team.totals.stats.fgm | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                -
+                                {% if team.totals.stats.fga is defined %}
+                                    {{ team.totals.stats.fga | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.fgm3 is defined %}
+                                    {{ team.totals.stats.fgm3 | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                -
+                                {% if team.totals.stats.fga3 is defined %}
+                                    {{ team.totals.stats.fga3 | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.ftm is defined %}
+                                    {{ team.totals.stats.ftm | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                -
+                                {% if team.totals.stats.fta is defined %}
+                                    {{ team.totals.stats.fta | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.oreb is defined %}
+                                    {{ team.totals.stats.oreb | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                -
+                                {% if team.totals.stats.dreb is defined %}
+                                    {{ team.totals.stats.dreb | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.treb is defined %}
+                                    {{ team.totals.stats.treb | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.pf is defined %}
+                                    {{ team.totals.stats.pf | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.ast is defined %}
+                                    {{ team.totals.stats.ast | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.to is defined %}
+                                    {{ team.totals.stats.to | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.blk is defined %}
+                                    {{ team.totals.stats.blk | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.stl is defined %}
+                                    {{ team.totals.stats.stl | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.stats.tp is defined %}
+                                    {{ team.totals.stats.tp | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% if game.plays.period is defined %}
+                <div class="table_xml">
+                    <div class="article__stats">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Quarter</th>
+                                    <th>FG</th>
+                                    <th>3PT</th>
+                                    <th>FT</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for per in game.plays.period %}
+                                    {% if per.summary is defined %}
+                                    {% for data in per.summary if data.vh == team.vh %}
+                                        <tr>
+                                            <td>
+                                                {% if per.number is defined %}
+                                                    {{ per.number | e | stats }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if data.fgm is defined %}
+                                                    {{ data.fgm | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                                -
+                                                {% if data.fga is defined %}
+                                                    {{ data.fga | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if data.fgm3 is defined %}
+                                                    {{ data.fgm3 | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                                -
+                                                {% if data.fga3 is defined %}
+                                                    {{ data.fga3 | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if data.ftm is defined %}
+                                                    {{ data.ftm | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                                -
+                                                {% if data.fta is defined %}
+                                                    {{ data.fta | e }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td>Totals:</td>
+                                    <td>
+                                        {% if team.totals.stats.fgm is defined %}
+                                            {{ team.totals.stats.fgm | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if team.totals.stats.fga is defined %}
+                                            {{ team.totals.stats.fga | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if team.totals.stats.fgm3 is defined %}
+                                            {{ team.totals.stats.fgm3 | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if team.totals.stats.fga3 is defined %}
+                                            {{ team.totals.stats.fga3 | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if team.totals.stats.ftm is defined %}
+                                            {{ team.totals.stats.ftm | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                        -
+                                        {% if team.totals.stats.fta is defined %}
+                                            {{ team.totals.stats.fta | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endif %}

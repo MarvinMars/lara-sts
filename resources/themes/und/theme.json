@@ -1,0 +1,5 @@
+{
+    "name": "und",
+    "extends": "default",
+    "asset-path": "themes/und"
+}

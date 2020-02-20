@@ -1,0 +1,16 @@
+/node_modules
+/public/hot
+/public/storage
+/package-lock.json
+/storage/*.key
+/vendor
+/storage/.DS_Store
+/.idea
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env
+public/page-cache/*
+.DS_Store

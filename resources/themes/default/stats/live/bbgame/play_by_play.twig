@@ -1,0 +1,96 @@
+<div class="table_xml">
+    <h2 class="text-left">Play By Play</h2>
+    <hr>
+</div>
+<div class="tabs-nav">
+    <ul>
+        {% for game in games.period %}
+            <li class="{% if loop.first %} active {% endif %}"><a href="#subtab_{{ game.number | e }}" class="tab-link">{{ game.number | e }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="tabs-list">
+    {% for game in games.period %}
+        <div class="tab {% if loop.first %} active {% endif %}" id="subtab_{{ game.number | e }}">
+            <div class="table_xml">
+                <h2 class="text-center"></h2>
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-wrap">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    {% if games.teams is defined %}
+                                        {{ games.teams['V'] | e }}
+                                    {% endif %}
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    {% if games.teams is defined %}
+                                        {{ games.teams['H'] | e }}
+                                    {% endif %}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in game.play %}
+                                <tr>
+                                    <td>
+                                        {% if data.time is defined %}
+                                            {{ data.time | e }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.team == games.teams['V'] %}
+                                            {% if data.type is defined %}
+                                                {{ data.type | e }}
+                                            {% endif %}
+                                            {% if data.action is defined %}
+                                                {{ data.action | e }}
+                                            {% endif %}
+                                            {% if data.checkname is defined %}
+                                                by {{ data.checkname | e }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.vscore is defined %}
+                                            {{ data.vscore | e }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.team is defined %}
+                                            {{ data.team | e }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.hscore is defined %}
+                                            {{ data.hscore | e }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if  data.team == games.teams['H'] %}
+                                            {% if data.type is defined %}
+                                                {{ data.type | e }}
+                                            {% endif %}
+                                            {% if data.action is defined %}
+                                                {{ data.action | e }}
+                                            {% endif %}
+                                            {% if data.checkname is defined %}
+                                                by {{ data.checkname | e }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

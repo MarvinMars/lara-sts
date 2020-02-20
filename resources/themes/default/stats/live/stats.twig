@@ -1,0 +1,206 @@
+{% macro recursivePlayerValue(playerValue) %}
+    {% if playerValue is iterable %}
+        {% for key, value in playerValue %}
+            {{ _self.recursivePlayerValue(value) }}
+        {% endfor %}
+    {% else %}
+        {{ playerValue | e | dash}}
+    {% endif %}
+{% endmacro %}
+{% if info is not empty %}
+    <div class="game_info">
+        {% for info_key,info_data in info.data %}
+            {% if info_data is not empty %}
+                {% if info_data is iterable and info_key == 'referees' %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{% for ref_data in info_data %}
+                            {% if ref_data.title is defined %}
+                                {{ ref_data.title | e  }} :
+                            {% endif %}
+                            {% if ref_data.name is defined %}
+                                    {{ ref_data.name | e  }} <br>
+                            {% endif %}
+                        {% endfor %}</p>
+                    </div>
+                {% else %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{{ info_data | e  }}</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% for team in teams %}
+    <div class="table_xml">
+        <h2 class="text-center">{{ team.name | e }}</h2>
+        {% for key_total,category in team.totals %}
+            {% if key_total == 'statsbyprd' %}
+            {% elseif key_total == 'statsbyprd'%}
+            {% elseif key_total == 'psitsummary' or key_total == 'hsitsummary'%}
+                <h4 class="text-center">{{ key_total | e | stats }}</h4>
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>NUM</th>
+                                <th>PLAYER</th>
+                                {% for key_category,value in category %}
+                                    <th>{{ key_category | e | stats }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for player in team.player.data %}
+                                {% if player[ key_total ] is defined %}
+                                    <tr>
+                                        <td>
+                                            {{ player.uni | e }}
+                                        </td>
+                                        <td>
+                                            {{ player.name | e }}
+                                        </td>
+                                        {% for key_category, value in category %}
+                                            <td>
+                                                {% if player[ key_total ][ key_category] is defined %}
+                                                    {% if player[ key_total ][ key_category ] is iterable %}
+                                                        {{ _self.recursivePlayerValue(player[ key_total ][ key_category ]) }}
+                                                    {% else %}
+                                                        {{ player[ key_total ][ key_category ] | e | dash }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2">Totals:</td>
+                                {% for key,value in category %}
+                                    <td>
+                                        {% if value is iterable %}
+                                            {{ _self.recursivePlayerValue(value) }}
+                                        {% else %}
+                                            {{ value | e | dash}}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            {% elseif key_total == 'firstdowns' or key_total == 'penalties' or key_total == 'conversions' or key_total == 'fumbles' or key_total == 'misc' or key_total == 'redzone'%}
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="100">{{ key_total | e | stats }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,value in category %}
+                                    <tr>
+                                        <td>{{ key | e | stats }}</td>
+                                        <td>
+                                            {% if value is iterable %}
+                                                {{ _self.recursivePlayerValue(value) }}
+                                            {% else %}
+                                                {{ value | e }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% elseif  category is iterable %}
+                <h4 class="text-center">{{ key_total | e | stats }}</h4>
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>NUM</th>
+                                <th>PLAYER</th>
+                                {% for key_category,value in category %}
+                                    <th>{{ key_category | e | stats }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for player in team.player.data %}
+                                {% if player[ key_total ] is defined %}
+                                    <tr>
+                                        <td>
+                                            {{ player.uni | e }}
+                                        </td>
+                                        <td>
+                                            {{ player.name | e }}
+                                        </td>
+                                        {% for key_category, value in category %}
+                                            <td>
+                                                {% if player[ key_total ][ key_category] is defined %}
+                                                    {% if player[ key_total ][ key_category ] is iterable %}
+                                                        {{ _self.recursivePlayerValue(player[ key_total ][ key_category ]) }}
+                                                    {% else %}
+                                                        {{ player[ key_total ][ key_category ] | e }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2">Totals:</td>
+                                {% for key,value in category %}
+                                    <td>
+                                        {% if value is iterable %}
+                                            {{ _self.recursivePlayerValue(value) }}
+                                        {% else %}
+                                            {{ value | e }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Stats</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ key_total | e | stats }}</td>
+                                    <td>{{ category | e }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}

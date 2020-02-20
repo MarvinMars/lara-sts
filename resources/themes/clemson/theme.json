@@ -1,0 +1,5 @@
+{
+    "name": "clemson",
+    "extends": "default",
+    "asset-path": "themes\/clemson"
+}

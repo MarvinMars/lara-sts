@@ -1,0 +1,1 @@
+@include('stats.live.common.boxscore',[ 'boxscore' => $boxscore ])

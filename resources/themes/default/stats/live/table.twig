@@ -1,0 +1,119 @@
+<div class="article__box_score">
+{% if boxscore is not empty %}
+    <div class="results">
+        <div class="results__head">
+            <span></span>
+            <div class="list">
+                {% for period in boxscore.data.0.periods.lineprd %}
+                    <span><small>{{ period.prd | e }} </small></span>
+                {% endfor %}
+                <span>total</span>
+            </div>
+        </div>
+        <div class="results__body">
+            {% for team in  boxscore.data %}
+                <div class="item">
+                    <div class="name">
+                        <span>{{ team.name | e }}</span>
+                    </div>
+                    <div class="list">
+                        {% for period in team.periods.lineprd %}
+                            <span><small>period {{ period.prd | e }}</small> {{ period.score | e }}</span>
+                        {% endfor %}
+                        <span class="total">
+                            <small>total</small>
+                            {{ team.periods.score }}
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if stats is not empty %}
+        <div class="stats">
+            <table>
+                <thead>
+                <tr>
+                    <th>Game stats</th>
+                    {% for team in  boxscore.data %}
+                        <th>{{ team.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for  name  in stats %}
+                    <tr>
+                        <td>{{ name | e | stats }}</td>
+                        {% for team in  boxscore.data %}
+                            {% if team.stats[name] is defined %}
+                                <td>{{ team.stats[name] | e }}</td>
+                            {% else %}
+                                <td>0</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endif %}
+</div>
+{% if scoring_summary is defined and article is not defined %}
+    <div class="table_xml">
+        <h2 class="text-center">Scoring Summary</h2>
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Time</th>
+                        <th>Scored By</th>
+                        <th>Assisted By</th>
+                        {% for team in scoring_summary.teams %}
+                            <th>  {{ team | e }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in scoring_summary.score %}
+                        <tr>
+                            <td>
+                                {% if data.prd is defined %}
+                                    {{ data.prd | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.time is defined %}
+                                    {{ data.time | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.assist1 is defined %}
+                                    {{ data.assist1 | e }}
+                                {% endif %}
+                                {% if data.assist2 is defined %}
+                                    ,{{ data.assist2 | e }}
+                                {% endif %}
+                            </td>
+                            {% for key, team in scoring_summary.teams %}
+                                {% if key ==  data.vh %}
+                                    <td>  1 </td>
+                                {% else %}
+                                    <td> 0 </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,5 @@
+{
+    "name": "ohio",
+    "extends": "default",
+    "asset-path": "themes/ohio"
+}

@@ -1,0 +1,340 @@
+{% if info is not empty %}
+    <div class="game_info">
+        {% for info_key,info_data in info.data %}
+            {% if info_data is not empty %}
+                {% if info_data is iterable and info_key == 'referees' %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{% for ref_data in info_data %}
+                                {% if ref_data.title is defined %}
+                                    {{ ref_data.title | e  }} :
+                                {% endif %}
+                                {% if ref_data.name is defined %}
+                                    {{ ref_data.name | e  }} <br>
+                                {% endif %}
+                            {% endfor %}</p>
+                    </div>
+                {% else %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{{ info_data | e  }}</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if game is defined %}
+    {% for team in game.team %}
+        <div class="table_xml">
+            <h4 class="text-left">
+                {{ team.name | e }}
+                {% if team.record is defined %}
+                    ( {{ team.record | e }} )
+                {% endif %}
+            </h4>
+        </div>
+        <div class="table_xml">
+            <div class="article__stats">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="5">Attack</th>
+                            <th colspan="2">Set</th>
+                            <th colspan="2">Serve</th>
+                            <th colspan="3">Block</th>
+                            <th colspan="2">Def</th>
+                            <th colspan="2">Rec</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Player</th>
+                            <th>sp</th>
+                            <th>k</th>
+                            <th>e</th>
+                            <th>ta</th>
+                            <th>pct</th>
+                            <th>a</th>
+                            <th>e</th>
+                            <th>sa</th>
+                            <th>se</th>
+                            <th>bs</th>
+                            <th>ba</th>
+                            <th>be</th>
+                            <th>dig</th>
+                            <th>bhe</th>
+                            <th>ra</th>
+                            <th>re</th>
+                            <th>pts</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if team.player is defined %}
+                            {% for data in team.player %}
+                                    <tr>
+                                        <td>
+                                            {% if data.uni is defined %}
+                                                {{ data.uni | e | stats }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-left">
+                                            {% if data.name is defined %}
+                                                {{ data.name | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.attack.sp is defined %}
+                                                {{ data.attack.sp | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.attack.k is defined %}
+                                                {{ data.attack.k | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.attack.e is defined %}
+                                                {{ data.attack.e | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.attack.ta is defined %}
+                                                {{ data.attack.ta | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.attack.pct is defined %}
+                                                {{ data.attack.pct | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.set.a is defined %}
+                                                {{ data.set.a | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.set.e is defined %}
+                                                {{ data.set.e | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.serve.sa is defined %}
+                                                {{ data.serve.sa | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.serve.se is defined %}
+                                                {{ data.serve.se | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.block.bs is defined %}
+                                                {{ data.block.bs | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.block.ba is defined %}
+                                                {{ data.block.ba | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.block.be is defined %}
+                                                {{ data.block.be | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.defense.dig is defined %}
+                                                {{ data.defense.dig | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.misc.bhe is defined %}
+                                                {{ data.misc.bhe | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.defense.ra is defined %}
+                                                {{ data.defense.ra | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.defense.re is defined %}
+                                                {{ data.defense.re | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.misc.pts is defined %}
+                                                {{ data.misc.pts | e }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2">Totals:</td>
+                            <td>
+                                {% if team.totals.attack.sp is defined %}
+                                    {{ team.totals.attack.sp | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.attack.k is defined %}
+                                    {{ team.totals.attack.k | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.attack.e is defined %}
+                                    {{ team.totals.attack.e | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.attack.ta is defined %}
+                                    {{ team.totals.attack.ta | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.attack.pct is defined %}
+                                    {{ team.totals.attack.pct | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.set.a is defined %}
+                                    {{ team.totals.set.a | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.set.e is defined %}
+                                    {{ team.totals.set.e | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.serve.sa is defined %}
+                                    {{ team.totals.serve.sa | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.serve.se is defined %}
+                                    {{ team.totals.serve.se | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.block.bs is defined %}
+                                    {{ team.totals.block.bs | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.block.ba is defined %}
+                                    {{ team.totals.block.ba | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.block.be is defined %}
+                                    {{ team.totals.block.be | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.defense.dig is defined %}
+                                    {{ team.totals.defense.dig | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.misc.bhe is defined %}
+                                    {{ team.totals.misc.bhe | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.defense.ra is defined %}
+                                    {{ team.totals.defense.ra | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.defense.re is defined %}
+                                    {{ team.totals.defense.re | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if team.totals.misc.pts is defined %}
+                                    {{ team.totals.misc.pts | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

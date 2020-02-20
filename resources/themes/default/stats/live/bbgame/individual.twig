@@ -1,0 +1,588 @@
+{% if info is not empty %}
+    <div class="game_info">
+        {% for info_key,info_data in info.data %}
+            {% if info_data is not empty %}
+                {% if info_data is iterable and info_key == 'referees' %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{% for ref_data in info_data %}
+                                {% if ref_data.title is defined %}
+                                    {{ ref_data.title | e  }} :
+                                {% endif %}
+                                {% if ref_data.name is defined %}
+                                    {{ ref_data.name | e  }} <br>
+                                {% endif %}
+                            {% endfor %}</p>
+                    </div>
+                {% else %}
+                    <div class="item">
+                        <span>{{ info_key | e | stats }}</span>
+                        <p>{{ info_data | e  }}</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if game.individual is defined %}
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">POINTS OFF TURNOVERS</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {% if game.teams is defined and game.teams['V'] is defined %}
+                                    {{  game.teams['V'] | e }}
+                                {% endif %}
+                            </td>
+                            {% for per in game.plays.period %}
+                                <td>
+                                    {% if game.individual['V'][per.number].pts_to is defined %}
+                                        {{ game.individual['V'][per.number].pts_to | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td>
+                                {% if game.team is defined %}
+                                    {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                        {% if team.totals.special.pts_to is defined %}
+                                            {{  team.totals.special.pts_to | e }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if game.teams is defined and game.teams['H'] is defined %}
+                                    {{  game.teams['H'] | e }}
+                                {% endif %}
+                            </td>
+                            {% for per in game.plays.period %}
+                                <td>
+                                    {% if game.individual['H'][per.number].pts_to is defined %}
+                                        {{ game.individual['H'][per.number].pts_to | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td>
+                                {% if game.team is defined %}
+                                    {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                        {% if team.totals.special.pts_to is defined %}
+                                            {{  team.totals.special.pts_to | e }}
+                                            {% else %}
+                                            0
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">2ND CHANCE POINTS</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].pts_ch2 is defined %}
+                                    {{ game.individual['V'][per.number].pts_ch2 | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.pts_ch2 is defined %}
+                                        {{  team.totals.special.pts_ch2 | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].pts_ch2 is defined %}
+                                    {{ game.individual['H'][per.number].pts_ch2 | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.pts_ch2 is defined %}
+                                        {{  team.totals.special.pts_ch2 | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">BENCH POINTS</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].pts_bench is defined %}
+                                    {{ game.individual['V'][per.number].pts_bench | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.pts_bench is defined %}
+                                        {{  team.totals.special.pts_bench | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].pts_bench is defined %}
+                                    {{ game.individual['H'][per.number].pts_bench | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.pts_bench is defined %}
+                                        {{  team.totals.special.pts_bench | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">LEAD GAINED BY</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].leads is defined %}
+                                    {{ game.individual['V'][per.number].leads | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.leads is defined %}
+                                        {{  team.totals.special.leads | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].leads is defined %}
+                                    {{ game.individual['H'][per.number].leads | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.leads is defined %}
+                                        {{  team.totals.special.leads | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">POINTS IN PAINT</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].pts_paint is defined %}
+                                    {{ game.individual['V'][per.number].pts_paint | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.pts_paint is defined %}
+                                        {{  team.totals.special.pts_paint | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].pts_paint is defined %}
+                                    {{ game.individual['H'][per.number].pts_paint | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.pts_paint is defined %}
+                                        {{  team.totals.special.pts_paint | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">FAST BREAK POINTS</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].pts_fastb is defined %}
+                                    {{ game.individual['V'][per.number].pts_fastb | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.pts_fastb is defined %}
+                                        {{  team.totals.special.pts_fastb | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].pts_fastb is defined %}
+                                    {{ game.individual['H'][per.number].pts_fastb | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.pts_fastb is defined %}
+                                        {{  team.totals.special.pts_fastb | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="10">SCORE TIED BY</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        {% if game.plays.period is defined %}
+                            {% for per in game.plays.period %}
+                                <th>
+                                    {{ per.number | e  }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                        <th>Totals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['V'] is defined %}
+                                {{  game.teams['V'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['V'][per.number].ties is defined %}
+                                    {{ game.individual['V'][per.number].ties | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'V'%}
+                                    {% if team.totals.special.ties is defined %}
+                                        {{  team.totals.special.ties | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if game.teams is defined and game.teams['H'] is defined %}
+                                {{  game.teams['H'] | e }}
+                            {% endif %}
+                        </td>
+                        {% for per in game.plays.period %}
+                            <td>
+                                {% if game.individual['H'][per.number].ties is defined %}
+                                    {{ game.individual['H'][per.number].ties | e }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% if game.team is defined %}
+                                {% for team in  game.team if team.vh is defined and team.vh == 'H'%}
+                                    {% if team.totals.special.ties is defined %}
+                                        {{  team.totals.special.ties | e }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

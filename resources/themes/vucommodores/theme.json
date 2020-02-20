@@ -1,0 +1,5 @@
+{
+    "name": "vucommodores",
+    "extends": "default",
+    "asset-path": "themes/vucommodores"
+}

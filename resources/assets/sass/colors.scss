@@ -1,0 +1,52 @@
+$main-color:#6699ff!important;
+
+body{
+  &.skin-blue,.skin-blue-light{
+      .main-header{
+        .navbar{
+          background-color: #6699ff!important;
+      }
+    }
+    $main-color:#6699ff!important;
+  }
+  &.skin-purple,.skin-purple-light{
+    .main-header {
+      .navbar {
+        background-color: #605ca8 !important;
+      }
+    }
+    $main-color:#605ca8!important;
+  }
+  &.skin-black,.skin-black-light{
+    .main-header{
+      .navbar{
+        background-color: #fff!important;
+      }
+    }
+    $main-color:#fff!important;
+  }
+  &.skin-red,.skin-red-light{
+    .main-header{
+      .navbar{
+        background-color: #dd4b39!important;
+      }
+    }
+    $main-color:#dd4b39!important;
+  }
+  &.skin-yellow,.skin-yellow-light{
+    .main-header{
+      .navbar{
+        background-color: #f39c12!important;
+      }
+    }
+    $main-color:#f39c12!important;
+  }
+  &.skin-green,.skin-green-light{
+    .main-header{
+      .navbar{
+        background-color: #00a65a!important;
+      }
+    }
+    $main-color:#00a65a!important;
+  }
+}

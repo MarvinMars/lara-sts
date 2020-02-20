@@ -1,0 +1,5 @@
+{
+    "name": "seminoles",
+    "extends": "default",
+    "asset-path": "themes/seminoles"
+}

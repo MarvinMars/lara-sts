@@ -1,0 +1,82 @@
+<div class="table_xml">
+    <h2 class="text-left">Play By Play</h2>
+    <hr>
+</div>
+<div class="tabs-nav">
+    <ul>
+        {% for game in games.game %}
+            <li class="{% if loop.first %} active {% endif %}"><a href="#subtab_{{ game.number | e }}" class="tab-link">{{ game.number | e }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="tabs-list">
+    {% for game in games.game %}
+        <div class="tab {% if loop.first %} active {% endif %}" id="subtab_{{ game.number | e }}">
+            <div class="table_xml">
+                <h2 class="text-center"></h2>
+                <div class="article__stats">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-wrap">
+                            <thead>
+                            <tr>
+                                <th>Serve</th>
+                                <th>
+                                    {% if games.teams is defined %}
+                                        {{ games.teams['V'] | e }}
+                                    {% endif %}
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    {% if games.teams is defined %}
+                                        {{ games.teams['H'] | e }}
+                                    {% endif %}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in game.play %}
+                                {% if data.text is defined and  data.text is not empty %}
+                                    <tr>
+                                        <td>
+                                            {% if data.serveteam is defined %}
+                                                {{ data.serveteam | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.text is defined and  data.team == games.teams['V'] %}
+                                                {{ data.text | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.vscore is defined %}
+                                                {{ data.vscore | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.point is defined %}
+                                                {{ data.point | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.hscore is defined %}
+                                                {{ data.hscore | e }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.text is defined  and data.team == games.teams['H'] %}
+                                                {{ data.text | e }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

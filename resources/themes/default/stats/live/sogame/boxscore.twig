@@ -1,0 +1,194 @@
+<div class="article__box_score">
+    {% if boxscore is not empty %}
+        <div class="results">
+            <div class="results__head">
+                <span></span>
+                <div class="list">
+                    {% for period in boxscore.data.0.periods.lineprd %}
+                        <span><small>{{ period.prd | e }} </small></span>
+                    {% endfor %}
+                    <span>total</span>
+                </div>
+            </div>
+            <div class="results__body">
+                {% for team in  boxscore.data %}
+                    <div class="item">
+                        <div class="name">
+                            <span>{{ team.name | e }}</span>
+                        </div>
+                        <div class="list">
+                            {% for period in team.periods.lineprd %}
+                                <span><small>period {{ period.prd | e }}</small> {{ period.score | e }}</span>
+                            {% endfor %}
+                            <span class="total">
+                            <small>total</small>
+                            {{ team.periods.score }}
+                        </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if stats is not empty %}
+        <div class="stats">
+            <table>
+                <thead>
+                <tr>
+                    <th>Game stats</th>
+                    {% for team in  boxscore.data %}
+                        <th>{{ team.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for  name  in stats %}
+                    <tr>
+                        <td>{{ name | e | stats }}</td>
+                        {% for team in  boxscore.data %}
+                            {% if team.stats[name] is defined %}
+                                <td>{{ team.stats[name] | e }}</td>
+                            {% else %}
+                                <td>0</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% if article is not defined %}
+{% if scoring_summary is defined %}
+    <div class="table_xml">
+        <h2 class="text-left">Scoring Summary</h2>
+        <hr>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                    {% for data in scoring_summary.score %}
+                        <tr>
+                            <td>
+                                {% if data.time is defined %}
+                                    {{ data.time | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.id is defined %}
+                                    {{ data.id | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                                {% if data.prd is defined %}
+                                    ( {{ data.prd | e }} )
+                                {% endif %}
+                                {% if data.desc is defined %}
+                                    <br> {{ data.desc | e }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if ejections is defined %}
+    <div class="table_xml">
+        <h2 class="text-left">Cautions and Ejections</h2>
+        <hr>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                    {% for data in ejections.pen %}
+                        <tr>
+                            <td style="background-color: {% if data.type is defined %} {{ data.type | e }} {% endif %} "></td>
+                            <td>
+                                {% if data.time is defined %}
+                                    {{ data.time | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.id is defined %}
+                                    {{ data.id | e }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.uni is defined %}
+                                    #{{ data.uni | e }}
+                                {% endif %}
+                                {% if data.name is defined %}
+                                    {{ data.name | e }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if teams is defined %}
+    <div class="table_xml">
+        <h2 class="text-left">Team Statistics</h2>
+        <hr>
+    </div>
+    <div class="table_xml">
+        <div class="article__stats">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {% if teams.periods is defined %}
+                                {% for i in 1..teams.periods %}
+                                    <th>{{ i }}</th>
+                                {% endfor %}
+                            {% endif %}
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cat_key, data in teams.stats %}
+                        <tr>
+                            <td colspan="10" class="text-left">{{ cat_key | e | upper}}</td>
+                        </tr>
+                        {% for team_key, team in data %}
+                            <tr>
+                                <td>
+                                    {{ team_key | e }}
+                                </td>
+                                {% if teams.periods is defined %}
+                                    {% for n in 1..teams.periods %}
+                                        {% if team[n] is defined %}
+                                            <td>{{ team[n] | e }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                <td>
+                                    {% if team.total is defined %}
+                                        {{ team.total | e }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{%  endif %}
